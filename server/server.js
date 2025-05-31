@@ -2,6 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import userRouter from './routes/userRouter.js'
+import { getLeaderboardPage } from './helpers/leaderboard.js';
+
 
 dotenv.config()
 import prisma from './exports/prisma.js'
@@ -30,6 +32,25 @@ const port = 3000
 app.get('/', (req, res) => {
   res.send('API is running')
 })
+
+app.get('/api/leaderboard', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    const leaderboard = await getLeaderboardPage(page, limit);
+    res.json({
+      success: "true",
+      data: leaderboard
+    });
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+    res.status(500).json({
+      success: "false",
+      message: "Failed to load leaderboard"
+    });
+  }
+});
 
 
 app.post('/submit', async (req, res) => {

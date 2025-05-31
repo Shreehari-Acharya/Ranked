@@ -1,0 +1,6 @@
+##USER_CODE##
+
+if __name__ == "__main__":
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(sum_of_even(arr))

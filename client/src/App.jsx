@@ -9,6 +9,16 @@ import { SlideTabsExample } from "./components/Navbar";
 import { Toaster } from "./components/ui/sonner";
 import { useAuth } from "./lib/useAuth";
 import PrivateRoute from "./components/PrivateRoute";
+import Leaderboard from './Leaderboard';
+
+function App() {
+  return (
+    <div>
+      <Leaderboard />
+    </div>
+  );
+}
+
 
 export default function App() {
   const { user , loading } = useAuth(); // TODO Requires some changes

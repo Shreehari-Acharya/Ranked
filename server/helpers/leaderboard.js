@@ -51,4 +51,24 @@ export async function getUserRating(userId) {
     }
 }
 
+export async function getLeaderboardPage(page = 1, limit = 10) {
+  const start = (page - 1) * limit;
+  const end = start + limit - 1;
 
+  try {
+    const entries = await redis.zrevrange('leaderboard', start, end, 'WITHSCORES');
+    const pagedLeaderboard = [];
+
+    for (let i = 0; i < entries.length; i += 2) {
+      pagedLeaderboard.push({
+        userId: entries[i],
+        rating: Number(entries[i + 1]),
+      });
+    }
+
+    return pagedLeaderboard;
+  } catch (error) {
+    console.error('Error in paginated leaderboard:', error);
+    return [];
+  }
+}
